@@ -123,8 +123,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
   @IBAction func sendPressed(_ sender: AnyObject) {
     
     //TODO: Verify email and message body both have data before allowing send:
-    if messageTextfield.text != "" {
-      
+    
       messageTextfield.endEditing(true)
       messageTextfield.isEnabled = false
       sendButton.isEnabled = false
@@ -150,8 +149,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
       }
       
-    }
-    
   }
   
   
@@ -169,12 +166,17 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
       message.messageBody = text
       message.sender = sender
       
+      //TODO: Verify email and message body both have data before allowing send:
+      if self.messageTextfield.text != "" {
+
+      
       self.messageArray.append(message)
       
       
       self.configureTableView()
       self.messageTableView.reloadData()
-      
+     
+      }
     }
     
   }
