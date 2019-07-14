@@ -47,7 +47,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
   }
   
   
-  
   //MARK: - TableView Delegate Methods
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -123,32 +122,35 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
   
   @IBAction func sendPressed(_ sender: AnyObject) {
     
-    messageTextfield.endEditing(true)
-    messageTextfield.isEnabled = false
-    sendButton.isEnabled = false
-    
-    let messagesDB = Database.database().reference().child("Messages")
-    
-    let messageDictionary = ["Sender": Auth.auth().currentUser?.email,
-                             "MessageBody": messageTextfield.text!]
-    
-    messagesDB.childByAutoId().setValue(messageDictionary) {
-      (error, reference) in
+    //TODO: Verify email and message body both have data before allowing send:
+    if messageTextfield.text != "" {
       
-      if error != nil {
-        print(error!)
+      messageTextfield.endEditing(true)
+      messageTextfield.isEnabled = false
+      sendButton.isEnabled = false
+      
+      let messagesDB = Database.database().reference().child("Messages")
+      
+      let messageDictionary = ["Sender": Auth.auth().currentUser?.email,
+                               "MessageBody": messageTextfield.text!]
+      
+      messagesDB.childByAutoId().setValue(messageDictionary) {
+        (error, reference) in
+        
+        if error != nil {
+          print(error!)
+        }
+        else {
+          print("Message saved successfully!")
+        }
+        
+        self.messageTextfield.isEnabled = true
+        self.sendButton.isEnabled = true
+        self.messageTextfield.text = ""
+        
       }
-      else {
-        print("Message saved successfully!")
-      }
-      
-      self.messageTextfield.isEnabled = true
-      self.sendButton.isEnabled = true
-      self.messageTextfield.text = ""
-      
       
     }
-    
     
   }
   
@@ -173,8 +175,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
       self.configureTableView()
       self.messageTableView.reloadData()
       
-      
-      
     }
     
   }
@@ -198,7 +198,5 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
   }
-  
-  
   
 }
