@@ -1,3 +1,8 @@
+Just a quick note about this repository. There is a problem using Xcode & GITHUB together. Whenever I try to use the Xcode 10 built-n Source Control features, I can create a new branch in the local GIT but it will not ever show up on GITHUB. Also Xcode keeps changing stuff in a file called xcscschememanagement.plist. Then every time you try to perform a checkout to switch branches, it says you need to do a commit first. I found that is is best not to use Xcode with GITHUB. Just use the MAC Terminal which work corrrectly with GITHUB. The app itself can be programmed in Xcode and it works fine on the iPhone. So, as long as you don't ever use Xcode with GITHUB, all is good.
+
+Below is the original Readme File.
+
+
 ![App Brewery Banner](Documentation/AppBreweryBanner.png)
 
 # Flash-Chat
