@@ -122,35 +122,32 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
   
   @IBAction func sendPressed(_ sender: AnyObject) {
     
-    //TODO: Verify email and message body both have data before allowing send:
+    messageTextfield.endEditing(true)
+    messageTextfield.isEnabled = false
+    sendButton.isEnabled = false
     
-      messageTextfield.endEditing(true)
-      messageTextfield.isEnabled = false
-      sendButton.isEnabled = false
+    let messagesDB = Database.database().reference().child("Messages")
+    
+    let messageDictionary = ["Sender": Auth.auth().currentUser?.email,
+                             "MessageBody": messageTextfield.text!]
+    
+    messagesDB.childByAutoId().setValue(messageDictionary) {
+      (error, reference) in
       
-      let messagesDB = Database.database().reference().child("Messages")
-      
-      let messageDictionary = ["Sender": Auth.auth().currentUser?.email,
-                               "MessageBody": messageTextfield.text!]
-      
-      messagesDB.childByAutoId().setValue(messageDictionary) {
-        (error, reference) in
-        
-        if error != nil {
-          print(error!)
-        }
-        else {
-          print("Message saved successfully!")
-        }
-        
-        self.messageTextfield.isEnabled = true
-        self.sendButton.isEnabled = true
-        self.messageTextfield.text = ""
-        
+      if error != nil {
+        print(error!)
+      }
+      else {
+        print("Message saved successfully!")
       }
       
+      self.messageTextfield.isEnabled = true
+      self.sendButton.isEnabled = true
+      self.messageTextfield.text = ""
+      
+    }
+    
   }
-  
   
   func retrieveMessages() {
     
@@ -168,15 +165,17 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
       
       //TODO: Verify email and message body both have data before allowing send:
       if self.messageTextfield.text != "" {
-
-      
-      self.messageArray.append(message)
-      
-      
-      self.configureTableView()
-      self.messageTableView.reloadData()
-     
+        if message.sender != "" {
+          
+          self.messageArray.append(message)
+          
+          self.configureTableView()
+          self.messageTableView.reloadData()
+          
+        }
+        
       }
+      
     }
     
   }
