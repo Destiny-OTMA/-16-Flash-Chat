@@ -27,12 +27,19 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    // TODO: Set yourself as the delegate and datasource here:
     messageTableView.delegate = self
     messageTableView.dataSource = self
-    messageTableView.register(UINib(nibName: "MessageCell", bundle: nil) , forCellReuseIdentifier: "customMessageCell")
+
+    // TODO: Set yourself as the delegate of the text field here:
     messageTextfield.delegate = self
     
+    // TODO: Set the tapGesture here:
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector (tableViewTapped))
+
+    // TODO: Register your MessageCell.xib file here:
+    messageTableView.register(UINib(nibName: "MessageCell", bundle: nil) , forCellReuseIdentifier: "customMessageCell")
+
     
     messageTableView.addGestureRecognizer(tapGesture)
     
@@ -47,8 +54,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
   }
   
   
-  //MARK: - TableView Delegate Methods
+  //MARK: - TableView DataSource Methods
   
+  // TODO: Declare cellForRowAtIndexPath here:
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
     let cell = tableView.dequeueReusableCell(withIdentifier: "customMessageCell", for: indexPath) as! CustomMessageCell
@@ -72,11 +80,12 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     return cell
   }
-  
+
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return messageArray.count
   }
   
+  // TODO: Declare tableViewTapped here:
   @objc func tableViewTapped() {
     messageTextfield.endEditing(true)
   }
