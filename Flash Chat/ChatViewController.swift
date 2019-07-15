@@ -91,7 +91,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
   }
   
   
-  
   //MARK: - TextField Delegate Methods
   
   
