@@ -121,28 +121,34 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
   
   @IBAction func sendPressed(_ sender: AnyObject) {
     
-    messageTextfield.endEditing(true)
-    messageTextfield.isEnabled = false
-    sendButton.isEnabled = false
-    
-    let messagesDB = Database.database().reference().child("Messages")
-    
-    let messageDictionary = ["Sender": Auth.auth().currentUser?.email,
-                             "MessageBody": messageTextfield.text!]
-    
-    messagesDB.childByAutoId().setValue(messageDictionary) {
-      (error, reference) in
+    //TODO: Verify that the message textbox contains a message before enabling the
+    //      send button. Email verification is not required since the account must
+    //      logged in to even be at that screen.
+    if self.messageTextfield.text != "" {
       
-      if error != nil {
-        print(error!)
-      }
-      else {
-        print("Message saved successfully!")
-      }
+      messageTextfield.endEditing(true)
+      messageTextfield.isEnabled = false
+      sendButton.isEnabled = false
       
-      self.messageTextfield.isEnabled = true
-      self.sendButton.isEnabled = true
-      self.messageTextfield.text = ""
+      let messagesDB = Database.database().reference().child("Messages")
+      
+      let messageDictionary = ["Sender": Auth.auth().currentUser?.email,
+                               "MessageBody": messageTextfield.text!]
+      
+      messagesDB.childByAutoId().setValue(messageDictionary) {
+        (error, reference) in
+        
+        if error != nil {
+          print(error!)
+        }
+        else {
+          print("Message saved successfully!")
+        }
+        
+        self.messageTextfield.isEnabled = true
+        self.sendButton.isEnabled = true
+        self.messageTextfield.text = ""
+      }
       
     }
     
@@ -162,18 +168,10 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
       message.messageBody = text
       message.sender = sender
       
-      //TODO: Verify email and message body both have data before allowing send:
-      if self.messageTextfield.text != "" {
-        if message.sender != "" {
-          
-          self.messageArray.append(message)
-          
-          self.configureTableView()
-          self.messageTableView.reloadData()
-          
-        }
-        
-      }
+      self.messageArray.append(message)
+      
+      self.configureTableView()
+      self.messageTableView.reloadData()
       
     }
     
